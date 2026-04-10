@@ -3,26 +3,24 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-# 安装 pnpm
-RUN npm install -g pnpm
+# 安装 pnpm 和 nest cli
+RUN npm install -g pnpm @nestjs/cli
 
-# 安装 nest cli
-RUN npm install -g @nestjs/cli
-
-# 复制 package 文件
+# 复制配置文件
 COPY package.json pnpm-lock.yaml ./
+COPY tsconfig.json tsconfig.build.json ./
+COPY nest-cli.json ./
+COPY src ./src
 
 # 安装依赖
 RUN pnpm install
 
-# 复制源代码
-COPY . .
-
-# 构建
+# 构建（使用 nest build）
 RUN pnpm build
 
-# 暴露端口
+# 验证 dist 是否存在
+RUN ls -la dist/ || echo "dist not found"
+
 EXPOSE 3000
 
-# 启动
 CMD ["node", "dist/main.js"]
