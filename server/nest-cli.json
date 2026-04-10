@@ -4,7 +4,7 @@
   "sourceRoot": "src",
   "compilerOptions": {
     "deleteOutDir": true,
-    "exclude": ["node_modules", "dist", ".git", "../dist", "../src"]
-  },
-  "webpack": true
+    "assets": ["**/*.json"],
+    "watchAssets": true
+  }
 }
